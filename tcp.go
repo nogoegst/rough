@@ -178,8 +178,14 @@ SYNACK:
 		case <-timeout:
 			result <- false
 			return
-		case tcpIn = <-s.RX:
-			if tcpIn.SYN && tcpIn.ACK && tcpIn.Ack == s.Pkt.Seq+1 {
+		case tcp, ok := <-s.RX:
+			if !ok {
+				log.Printf("RX channel closed")
+				result <- false
+				return
+			}
+			if tcp.SYN && tcp.ACK && tcp.Ack == s.Pkt.Seq+1 {
+				tcpIn = tcp
 				break SYNACK
 			}
 			result <- false

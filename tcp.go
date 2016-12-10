@@ -81,6 +81,10 @@ func (s *TCP) RXLoop() {
 				goto DoneRX
 			}
 			tcpLayer := packet.Layer(layers.LayerTypeTCP)
+			if tcpLayer == nil {
+				log.Printf("Error extracting TCP layer of: %v", packet)
+				continue
+			}
 			tcp, _ := tcpLayer.(*layers.TCP)
 			s.RX <- tcp
 		}

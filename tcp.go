@@ -14,9 +14,9 @@ import (
 	"net"
 	"time"
 
-	"github.com/nogoegst/gopacket"
-	"github.com/nogoegst/gopacket/layers"
-	"github.com/nogoegst/gopacket/pcap"
+	"github.com/google/gopacket"
+	"github.com/google/gopacket/layers"
+	"github.com/google/gopacket/pcap"
 )
 
 type TCP struct {
@@ -132,7 +132,7 @@ func (s *TCP) TXLoop() {
 
 		//retries := 0
 	Inject:
-		_, err := s.handle.WritePacketData(outgoingPacket)
+		err := s.handle.WritePacketData(outgoingPacket)
 		if err != nil {
 			//retries += 1
 			// backoff

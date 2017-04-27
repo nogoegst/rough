@@ -10,13 +10,13 @@ package rough
 import (
 	"fmt"
 	"log"
-	badrand "math/rand"
 	"net"
 	"time"
 
 	"github.com/google/gopacket"
 	"github.com/google/gopacket/layers"
 	"github.com/google/gopacket/pcap"
+	"github.com/nogoegst/rand"
 )
 
 type TCP struct {
@@ -136,7 +136,7 @@ func (s *TCP) TXLoop() {
 		if err != nil {
 			//retries += 1
 			// backoff
-			time.Sleep(time.Duration(badrand.Intn(50)) * time.Microsecond)
+			time.Sleep(time.Duration(rand.Intn(50)) * time.Microsecond)
 			goto Inject
 		}
 		//if retries != 0 {
@@ -169,7 +169,7 @@ func (s *TCP) SetRouting(r Routing) {
 }
 
 func (s *TCP) DoHandshake(result chan<- bool) {
-	s.Pkt.Seq = RandUint32()
+	s.Pkt.Seq = rand.Uint32()
 	s.Pkt.SYN = true
 	s.SendOut()
 	s.WaitTX()
